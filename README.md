@@ -1,146 +1,137 @@
- Contract Simplifier
+# 🧠 Contract Simplifier & Bias Detector
 
-**Project conducted:** October 2025
-
-An AI-powered system that simplifies complex contractual language and identifies biased or unfair terms using Natural Language Processing (NLP) and Large Language Models (LLMs).
+**A Streamlit-based NLP web application that simplifies legal contracts, detects biased language, and suggests fair rewrites.**
 
 ---
 
-## Introduction
+## 🚀 Overview
 
-The **Contract Simplifier** project aims to make legal documents more transparent, readable, and fair.
-Contracts often contain technical jargon and subtle biases that can affect interpretation.
-This system uses text simplification and bias detection techniques to automatically generate a **plain-language version** of contracts and highlight **potentially biased terms**.
+Legal contracts are often filled with complex and one-sided language.  
+This project uses **Natural Language Processing (NLP)** to make contracts easier to understand and identify clauses that might be **biased or unfair**.
 
-The main objectives are:
+Built entirely with **Python** and **Streamlit**, the app performs:
+1. **Simplification** – converts legal text into plain English  
+2. **Bias Detection** – flags one-sided clauses  
+3. **Fair Rewrite** – suggests neutral rewordings
 
-* To simplify complex legal text into easy-to-understand language.
-* To detect and mitigate bias in legal and contractual wording.
-* To ensure fair and inclusive representation in professional documentation.
+---
 
-  <img width="1788" height="821" alt="image" src="https://github.com/user-attachments/assets/3ea873fe-ea4c-477d-8f25-dbae5f67fbfd" />
+## ⚙️ Tech Stack
+
+| Component | Technology Used |
+|------------|----------------|
+| **Frontend** | [Streamlit](https://streamlit.io/) |
+| **Backend** | Python |
+| **NLP Models** | Hugging Face Transformers |
+| **Model Backend** | PyTorch |
+| **Libraries** | `transformers`, `torch`, `pdfplumber`, `nltk`, `pandas`, `re` |
+
+---
+
+## 🧩 Models Used
+
+| Feature | Model / Technique | Description |
+|----------|------------------|--------------|
+| **Simplification** | `philschmid/distilbart-cnn-12-6-samsum` | Summarizes and simplifies legal clauses into plain English |
+| **Bias Detection (ML)** | `facebook/bart-large-mnli` | Zero-shot classifier that detects potentially unfair or exploitative clauses |
+| **Bias Detection (Rule-Based)** | Custom keyword dictionary (`BIAS_KEYWORDS`) | Flags known biased terms like *sole discretion*, *non-refundable*, *exclusive rights* |
+| **Fair Rewrite** | Regex-based replacements | Suggests neutral, ethical rephrasings for biased clauses |
+
+---
+
+## 📚 Data Source
+
+No model was trained from scratch.  
+The system uses:
+- Sample **legal contract templates** (NDAs, employment, service agreements) for testing.  
+- A custom **bias dictionary** of ~30 flagged legal phrases.  
+- Pre-trained models from **Hugging Face** for summarization and classification.
+
+---
+
+## 🧮 Workflow
+
+### 1. **Input Stage**
+Upload a **PDF or TXT** file or paste contract text directly.  
+`pdfplumber` extracts and cleans text using regex and NLTK.
+
+### 2. **Clause Segmentation**
+The contract is split into **logical paragraphs or clauses** for analysis.
+
+### 3. **Simplification**
+Each clause is summarized using **DistilBART**, producing:
+- Plain English text
+- Optional bullet-point summary
+
+### 4. **Bias Detection**
+Two-layer bias detection:
+1. **Keyword Scan:** Finds legal red-flag phrases.  
+2. **ML Classification:** Zero-shot model (`bart-large-mnli`) calculates bias probability.
+
+Bias score is categorized as:
+| Label | Range |
+|--------|--------|
+| 🟢 Low Bias | 0–0.25 |
+| 🟠 Moderate Bias | 0.25–0.55 |
+| 🔴 High Bias | >0.55 |
+
+### 5. **Fair Rewrite**
+Automatically replaces biased terms with neutral ones.  
+Example:
+> “at its sole discretion” → “after mutual agreement or with reasonable notice”
+
+### 6. **Output**
+Interactive Streamlit UI displays:
+- Simplified text  
+- Original clause  
+- Fair rewrite suggestion  
+- Bias score and explanation  
+
+No files are stored or uploaded to external servers.
+ <img width="1788" height="821" alt="image" src="https://github.com/user-attachments/assets/3ea873fe-ea4c-477d-8f25-dbae5f67fbfd" />
+---
+
+## 🧠 Educational & Technical Learning Outcomes
+
+- Implemented **transformer pipelines** (summarization + classification)  
+- Built **rule-based bias correction** logic  
+- Designed an **interactive NLP app** using Streamlit  
+- Learned to evaluate **ethical and fairness aspects** in contract analysis  
+
+---
 
 
 ---
 
-## Dataset
+## 🧰 Installation & Setup
 
-### Data Source
+### 1. Clone the Repository
+```bash
+git clone https://github.com/<your-username>/contract-simplifier-bias-detector.git
+cd contract-simplifier-bias-detector
 
-The text data for testing was compiled from publicly available **sample contract templates** (e.g., service agreements, NDAs, employment contracts).
-These were cleaned and processed to extract clause-level content for model evaluation.
+pip install -r requirements.txt
 
-### Bias Reference List
+streamlit
+transformers
+torch
+pdfplumber
+nltk
+pandas
+sentencepiece
 
-A **custom dictionary** of biased or discriminatory terms (related to gender, race, or age) was manually curated and used for detection.
+##🔮 Future Improvements
 
----
+Integrate readability scoring (e.g., Flesch–Kincaid index)
 
-## Tools & Technologies
+Add human evaluation for bias severity
 
-| Category                 | Tools / Libraries                        |
-| ------------------------ | ---------------------------------------- |
-| **Language**             | Python                                   |
-| **Frontend**             | Streamlit                                |
-| **NLP Framework**        | Hugging Face Transformers                |
-| **Model Used**           | T5 Transformer (for text simplification) |
-| **Supporting Libraries** | pandas, torch, re, nltk                  |
-| **Environment**          | Local deployment via Streamlit interface |
+Build explainability dashboard for clause-level insights
 
----
+Extend support for multi-language contracts
 
-## Project Workflow
+##👩‍💻 Author
 
-### 1. Text Input
+Arushi Dubey
 
-File: `app.py`
-Users can upload contract text files (PDF/TXT/DOCX).
-The text is extracted, cleaned, and segmented into meaningful clauses.
-
-### 2. Simplification
-
-The **Pegasus model** (`google/pegasus-xsum`) generates simplified summaries of each clause while retaining legal meaning and structure.
-
-### 3. Bias Detection
-
-A **rule-based NLP component** scans the text for biased or discriminatory terms based on a keyword dictionary and linguistic patterns.
-
-### 4. Fair Rewrite
-
-Detected biased sentences are automatically rephrased into fair, neutral alternatives to ensure inclusivity and ethical compliance.
-
-### 5. Output Display
-
-The Streamlit app displays three views for user comparison:
-
-* **Original Clause**
-* **Simplified Version**
-* **Fair Rewrite (if applicable)**
-
-All operations are performed in-memory—no CSV output or file downloads are required.
-
----
-
-## Model Details
-
-| Component          | Model / Method                | Description                                       |
-| ------------------ | ----------------------------- | ------------------------------------------------- |
-| **Simplification** | Pegasus (Transformer-based)   | Generates simplified versions of contract clauses |
-| **Bias Detection** | Keyword-based NLP rules       | Detects and flags bias using custom dictionaries  |
-| **Fair Rewrite**   | Text rephrasing using Pegasus | Produces neutral, unbiased rewrites               |
-
----
-
-## Evaluation
-
-The project was qualitatively evaluated based on:
-
-* **Readability improvement** (ease of understanding)
-* **Semantic preservation** (legal meaning retained)
-* **Bias reduction** (removal of discriminatory or unfair language)
-
-Future quantitative evaluation can include readability metrics (e.g., Flesch–Kincaid score) and human review studies.
-
----
-
-## How to Use
-
-1. **Install Dependencies**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Run Application**
-
-   ```bash
-   streamlit run app.py
-   ```
-
-3. **Open in Browser**
-   Go to `http://localhost:8501`
-   Upload a document → View simplified and unbiased versions instantly.
-
----
-
-## Learning Outcomes
-
-* Implemented a hybrid NLP system combining **summarization and bias detection**.
-* Gained experience in **Hugging Face Transformers**, **Streamlit UI**, and **ethical AI principles**.
-* Designed a functional prototype to assist legal professionals and general users.
-* Strengthened understanding of **document-level NLP** and **fair language models**.
-
----
-
-## Future Scope
-
-* Integrate a **deep learning-based bias detection model** trained on larger legal corpora.
-* Extend to **multi-language support** (e.g., Hindi, Spanish, French).
-* Deploy via a **cloud API service** for scalable access.
-* Add explainable AI insights to justify simplification decisions.
-
----
-
-Would you like me to make this version look **GitHub-ready** (formatted in Markdown with icons, tables, and headings like a repository README)?
-I can also include your **name, role, and course info** at the bottom if you plan to submit it officially.
 
