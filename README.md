@@ -18,6 +18,9 @@ The main objectives are:
 * To detect and mitigate bias in legal and contractual wording.
 * To ensure fair and inclusive representation in professional documentation.
 
+  <img width="1788" height="821" alt="image" src="https://github.com/user-attachments/assets/3ea873fe-ea4c-477d-8f25-dbae5f67fbfd" />
+
+
 ---
 
 ## Dataset
@@ -40,7 +43,7 @@ A **custom dictionary** of biased or discriminatory terms (related to gender, ra
 | **Language**             | Python                                   |
 | **Frontend**             | Streamlit                                |
 | **NLP Framework**        | Hugging Face Transformers                |
-| **Model Used**           | Google Pegasus (for text simplification) |
+| **Model Used**           | T5 Transformer (for text simplification) |
 | **Supporting Libraries** | pandas, torch, re, nltk                  |
 | **Environment**          | Local deployment via Streamlit interface |
 
@@ -140,3 +143,4 @@ Future quantitative evaluation can include readability metrics (e.g., Flesch–K
 
 Would you like me to make this version look **GitHub-ready** (formatted in Markdown with icons, tables, and headings like a repository README)?
 I can also include your **name, role, and course info** at the bottom if you plan to submit it officially.
+
