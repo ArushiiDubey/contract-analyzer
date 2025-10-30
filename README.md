@@ -119,7 +119,7 @@ pdfplumber
 nltk
 pandas
 sentencepiece
-
+---
 ##🔮 Future Improvements
 
 Integrate readability scoring (e.g., Flesch–Kincaid index)
@@ -133,5 +133,6 @@ Extend support for multi-language contracts
 ##👩‍💻 Author
 
 Arushi Dubey
+
 
 
