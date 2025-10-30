@@ -119,20 +119,6 @@ pdfplumber
 nltk
 pandas
 sentencepiece
----
-##🔮 Future Improvements
-
-Integrate readability scoring (e.g., Flesch–Kincaid index)
-
-Add human evaluation for bias severity
-
-Build explainability dashboard for clause-level insights
-
-Extend support for multi-language contracts
-
-##👩‍💻 Author
-
-Arushi Dubey
 
 
 
